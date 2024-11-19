@@ -30,5 +30,9 @@ const login = async (email, password) => {
   return { message: 'Đăng nhập thành công', token };
 };
 
+const startProgram = async () => {
+  return {message: "Chào mừng đến với chương trình"}
+}
 
-module.exports = { register, login };
+
+module.exports = { register, login,startProgram };
