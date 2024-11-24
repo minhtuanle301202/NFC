@@ -5,9 +5,9 @@ const bookingRoom = async (req, res) => {
   try {
     const result = await BookingService.bookingRoom(email, check_in, check_out);
     if (result.message == 'Hết phòng') {
-      res.status(200).json({ message: 'Không còn phòng nào trống' });
+      res.status(400).json({ message: 'Không còn phòng nào trống' });
     } else {
-      res.status(200).json({ data: result, message: "Đặt phòng thành công" });
+      res.status(200).json({ roomNumber: result.roomNumber, message: "Đặt phòng thành công" });
     }
 
   } catch (error) {

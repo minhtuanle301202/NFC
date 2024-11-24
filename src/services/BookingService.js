@@ -26,7 +26,8 @@ const bookingRoom = async (email, check_in, check_out) => {
       check_out,
     });
     await booking.save();
-    return { booking };
+    const roomNumber = booking.room_number;
+    return { roomNumber };
   }
 }
 
