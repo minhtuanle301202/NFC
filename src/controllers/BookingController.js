@@ -1,4 +1,21 @@
 const BookingService = require('../services/BookingService');
+const mqtt = require('mqtt');
+const options = {
+    host: '529bcfb8f2fd4065bdbcb36fdeb383ca.s1.eu.hivemq.cloud',
+    port: 8883,
+    protocol: 'mqtts',
+    username: 'minhtuanle',
+    password: 'minhtuanle'
+}
+const client = mqtt.connect(options);
+client.on('connect', function () {
+  console.log('Connected');
+});
+
+client.on('error', function (error) {
+  console.log(error);
+});
+
 
 const bookingRoom = async (req, res) => {
   const { email, check_in, check_out } = req.body;
@@ -15,14 +32,21 @@ const bookingRoom = async (req, res) => {
   }
 }
 
-const register = async (req, res) => {
-  const { username, email, password, phone } = req.body;
+const checkInRoom = async(req,res) => {
+  const {email,roomNumber} = req.body;
   try {
-    const result = await userService.register(username, email, password, phone);
-    res.status(201).json(result);
+    const result = await BookingService.checkInRoom(email,roomNumber);
+    if (result.message === "success") {
+      let topic = `checkin/${result.roomNumber}` ;
+      client.subscribe(topic);
+      client.publish(topic,result.email);
+      res.status(200).json({message: "Mở cửa phòng"})
+    } else {
+      res.status(200).json({message:"Không mở cửa phòng",result});
+    }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({message:'Lỗi server'});
   }
-};
+}
 
-module.exports = { bookingRoom }
+module.exports = { bookingRoom,checkInRoom }

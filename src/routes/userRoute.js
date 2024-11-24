@@ -10,5 +10,6 @@ router.post('/register',userController.register);
 router.post('/login',userController.login);
 router.get('/data',userController.startProgram)
 router.post('/createRoom',roomController.createRoom)
+router.post('/checkInRoom',bookingController.checkInRoom)
 
 module.exports = router;

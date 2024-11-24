@@ -31,6 +31,24 @@ const bookingRoom = async (email, check_in, check_out) => {
   }
 }
 
+const checkInRoom = async (email, roomNumber) => {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  const bookings = await Booking.find({ email, room_number:roomNumber });
+
+  // Kiểm tra xem có bản ghi nào ngày hôm nay nằm trong khoảng check_in và check_out hay không
+  const isBooked = bookings.some(
+    (booking) =>
+      new Date(booking.check_in) <= today && new Date(booking.check_out) >= today
+  );
+
+  if (isBooked) {
+    return {message:"success",email,roomNumber}
+  } else {
+    return {message: "failure"}
+  }
+}
 
 
-module.exports = { bookingRoom };
+
+module.exports = { bookingRoom,checkInRoom };
