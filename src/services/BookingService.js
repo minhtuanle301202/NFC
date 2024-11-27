@@ -32,14 +32,16 @@ const bookingRoom = async (email, check_in, check_out) => {
 }
 
 const checkInRoom = async (email, roomNumber) => {
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
+  const vietnamOffset = 7 * 60 * 60 * 1000;
+
+  const today = new Date().getTime() + vietnamOffset;
+
   const bookings = await Booking.find({ email, room_number:roomNumber });
 
   // Kiểm tra xem có bản ghi nào ngày hôm nay nằm trong khoảng check_in và check_out hay không
   const isBooked = bookings.some(
     (booking) =>
-      new Date(booking.check_in) <= today && new Date(booking.check_out) >= today
+      (new Date(booking.check_in).getTime()) <= today && (new Date(booking.check_out).getTime()) >= today
   );
 
   if (isBooked) {
