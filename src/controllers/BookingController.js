@@ -33,13 +33,13 @@ const bookingRoom = async (req, res) => {
 }
 
 const checkInRoom = async(req,res) => {
-  const {email,roomNumber} = req.body;
+  const {email,roomNumber,code} = req.body;
   try {
-    const result = await BookingService.checkInRoom(email,roomNumber);
+    const result = await BookingService.checkInRoom(email,roomNumber,code);
     if (result.message === "success") {
       let topic = `checkin/${result.roomNumber}` ;
       client.subscribe(topic);
-      client.publish(topic,result.email);
+      client.publish(topic,result.code);
       res.status(200).json({message: "Mở cửa phòng"})
     } else {
       res.status(200).json({message:"Không mở cửa phòng",result});

@@ -31,7 +31,7 @@ const bookingRoom = async (email, check_in, check_out) => {
   }
 }
 
-const checkInRoom = async (email, roomNumber) => {
+const checkInRoom = async (email, roomNumber,code) => {
   const vietnamOffset = 7 * 60 * 60 * 1000;
 
   const today = new Date().getTime() + vietnamOffset;
@@ -45,7 +45,7 @@ const checkInRoom = async (email, roomNumber) => {
   );
 
   if (isBooked) {
-    return {message:"success",email,roomNumber}
+    return {message:"success",email,roomNumber,code}
   } else {
     return {message: "failure"}
   }
