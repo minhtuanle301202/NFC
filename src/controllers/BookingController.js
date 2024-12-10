@@ -42,7 +42,7 @@ const checkInRoom = async(req,res) => {
       client.publish(topic,result.code);
       res.status(200).json({message: "Mở cửa phòng"})
     } else {
-      res.status(200).json({message:"Không mở cửa phòng",result});
+      res.status(400).json({message:"Không mở cửa phòng"});
     }
   } catch (error) {
     res.status(400).json({message:'Lỗi server'});
